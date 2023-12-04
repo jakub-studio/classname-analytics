@@ -1,0 +1,38 @@
+{
+  "name": "classname-analytics",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "ncc build ./src/index.js --no-cache"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jakub-studio/classname-analytics.git"
+  },
+  "bin": {
+    "classname-analytics": "bin/cli.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "bugs": {
+    "url": "https://github.com/jakub-studio/classname-analytics/issues"
+  },
+  "homepage": "https://github.com/jakub-studio/classname-analytics#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^20.10.2",
+    "@vercel/ncc": "^0.38.1",
+    "@babel/parser": "^7.23.5",
+    "@babel/traverse": "^7.23.5",
+    "glob": "^10.3.10",
+    "open": "^9.1.0",
+    "ora": "^7.0.1",
+    "yargs": "^17.7.2"
+  }
+}
