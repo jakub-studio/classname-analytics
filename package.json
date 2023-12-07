@@ -18,7 +18,8 @@
   "license": "ISC",
   "files": [
     "bin",
-    "dist"
+    "dist",
+    "resources"
   ],
   "bugs": {
     "url": "https://github.com/jakub-studio/classname-analytics/issues"

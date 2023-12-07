@@ -1,9 +1,11 @@
 import { glob } from "glob";
 import ora from "ora";
-import { join } from "path";
-import { readFile } from "fs/promises";
+import { join, resolve, parse as parsePath } from "path";
+import { readFile, writeFile } from "fs/promises";
 import { parse } from "@babel/parser";
 import traverse from "@babel/traverse";
+import { OUTPUT_FILE_PREFIX } from "./constants";
+import { formatDateTimeForSorting } from "./util";
 
 // the below is ugly but if I try using the import syntax, the build will break
 const yargs = require("yargs");
@@ -46,7 +48,7 @@ const obj = {
 
 yargs(hideBin(process.argv))
 	.command("$0", "analyze classnames", () => { }, async (argv) => {
-		console.log({ argv });
+		console.log({ argv, __dirname });
 
 		const spinner = ora('Running glob pattern').start();
 		const globData = await glob("**/*.{ts,js,tsx,jsx}", { ignore: 'node_modules/**' });
@@ -58,6 +60,8 @@ yargs(hideBin(process.argv))
 		spinner.text = `Reading and processing ${files.length} files`;
 
 		const data = {
+			dir: parsePath(process.cwd()).base,
+			time: new Date(),
 			classNames: {}
 		}
 
@@ -118,6 +122,16 @@ yargs(hideBin(process.argv))
 				}
 			})
 		}
-		console.log(JSON.stringify(data, null, 4));
+		// console.log(JSON.stringify(data, null, 4));
+
+		const template = await readFile(resolve(__dirname, "../", "resources", "template.html"), { encoding: "utf-8" });
+		const finalOutput = template.replace("DATA_JSON_STRING", `JSON.parse(${JSON.stringify(JSON.stringify(data))})`);
+
+		const outputFilename = OUTPUT_FILE_PREFIX + formatDateTimeForSorting(new Date()) + ".html";
+		const outputPath = join(process.cwd(), outputFilename);
+
+		await writeFile(outputPath, finalOutput, { encoding: "utf-8" });
+		spinner.stop();
+		open(outputPath);
 	})
 	.parseAsync();
