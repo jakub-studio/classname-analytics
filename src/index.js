@@ -7,7 +7,7 @@ import traverse from "@babel/traverse";
 import { OUTPUT_FILE_PREFIX } from "./constants";
 import { formatDateTimeForSorting } from "./util";
 
-// the below is ugly but if I try using the import syntax, the build will break
+// the below is ugly (mix n matching import and require) but if I try using the import syntax, the build will break
 const yargs = require("yargs");
 const { hideBin } = require("yargs/helpers");
 
